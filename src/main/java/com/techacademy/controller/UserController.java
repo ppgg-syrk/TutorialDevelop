@@ -4,6 +4,8 @@ import java.util.Set; //Lesson18Chapter9削除
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult; //Lesson18Chapter10入力チェック追加
+import org.springframework.validation.annotation.Validated; //Lesson18Chapter10入力チェック追加
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute; // Lesson18Chapter7登録追加
 import org.springframework.web.bind.annotation.PathVariable; // Lesson18Chapter8更新追加
@@ -39,16 +41,22 @@ public class UserController {
         // User登録画面に遷移
         return "user/register";
     }
-
+    
+    // ----- 変更ここから -----Lesson18Chapter10入力チェック
     /** User登録処理 */
     @PostMapping("/register")
-    public String postRegister(User user) {
+    public String postRegister(@Validated User user, BindingResult res, Model model) {
+        if(res.hasErrors()) {
+            // エラーあり
+            return getRegister(user);
+        }
         // User登録
         service.saveUser(user);
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
     }
     // ----- 追加:ここまで -----Lesson18Chapter7登録
+ // ----- 変更ここまで -----Lesson18Chapter10入力チェック
 
     // ----- 追加:ここから -----Lesson18Chapter8更新
     /** User更新画面を表示 */
