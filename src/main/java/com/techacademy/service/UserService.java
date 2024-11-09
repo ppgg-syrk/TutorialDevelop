@@ -1,6 +1,8 @@
 package com.techacademy.service;
 
 import java.util.List;
+import java.util.Set; // 追加Lesson18Chapter9削除
+
 import org.springframework.stereotype.Service;
 import com.techacademy.entity.User;
 import com.techacademy.repository.UserRepository; // 追加
@@ -35,4 +37,14 @@ public class UserService {
         return userRepository.save(user);
     }
     // ----- 追加:ここまで -----Lesson18Chapter7登録
+    
+ // ----- 追加:ここから -----Lesson18Chapter9削除
+    /** Userの削除を行なう */
+    @Transactional
+    public void deleteUser(Set<Integer> idck) {
+        for(Integer id : idck) {
+            userRepository.deleteById(id);
+        }
+    }
+    // ----- 追加:ここまで -----Lesson18Chapter9削除
 }

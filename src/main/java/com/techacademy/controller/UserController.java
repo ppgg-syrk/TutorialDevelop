@@ -1,5 +1,7 @@
 package com.techacademy.controller;
 
+import java.util.Set; //Lesson18Chapter9削除
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute; // Lesson18Chapte
 import org.springframework.web.bind.annotation.PathVariable; // Lesson18Chapter8更新追加
 import org.springframework.web.bind.annotation.PostMapping; // Lesson18Chapter7登録追加
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam; //Lesson18Chapter9削除
 
 import com.techacademy.entity.User; // Lesson18Chapter7登録追加
 import com.techacademy.service.UserService;
@@ -66,4 +69,16 @@ public class UserController {
         return "redirect:/user/list";
     }
     // ----- 追加:ここまで -----Lesson18Chapter8更新
+    
+    // ----- 追加:ここから -----Lesson18Chapter9削除
+    /** User削除処理 */
+    @PostMapping(path="list", params="deleteRun")
+    public String deleteRun(@RequestParam(name="idck") Set<Integer> idck, Model model) {
+        // Userを一括削除
+        service.deleteUser(idck);
+        // 一覧画面にリダイレクト
+        return "redirect:/user/list";
+    }
+    // ----- 追加:ここまで -----Lesson18Chapter9削除
+    
 }
