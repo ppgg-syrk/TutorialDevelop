@@ -3,11 +3,12 @@ package com.techacademy.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute; // 追加
-import org.springframework.web.bind.annotation.PostMapping; // 追加
+import org.springframework.web.bind.annotation.ModelAttribute; // Lesson18Chapter7登録追加
+import org.springframework.web.bind.annotation.PathVariable; // Lesson18Chapter8更新追加
+import org.springframework.web.bind.annotation.PostMapping; // Lesson18Chapter7登録追加
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.techacademy.entity.User; // 追加
+import com.techacademy.entity.User; // Lesson18Chapter7登録追加
 import com.techacademy.service.UserService;
 
 @Controller
@@ -27,8 +28,8 @@ public class UserController {
         // user/list.htmlに画面遷移
         return "user/list";
     }
-    
-    // ----- 追加:ここから -----
+
+    // ----- 追加:ここから -----Lesson18Chapter7登録
     /** User登録画面を表示 */
     @GetMapping("/register")
     public String getRegister(@ModelAttribute User user) {
@@ -44,5 +45,25 @@ public class UserController {
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
     }
-    // ----- 追加:ここまで -----
+    // ----- 追加:ここまで -----Lesson18Chapter7登録
+
+    // ----- 追加:ここから -----Lesson18Chapter8更新
+    /** User更新画面を表示 */
+    @GetMapping("/update/{id}/")
+    public String getUser(@PathVariable("id") Integer id, Model model) {
+        // Modelに登録
+        model.addAttribute("user", service.getUser(id));
+        // User更新画面に遷移
+        return "user/update";
+    }
+
+    /** User更新処理 */
+    @PostMapping("/update/{id}/")
+    public String postUser(User user) {
+        // User登録
+        service.saveUser(user);
+        // 一覧画面にリダイレクト
+        return "redirect:/user/list";
+    }
+    // ----- 追加:ここまで -----Lesson18Chapter8更新
 }
