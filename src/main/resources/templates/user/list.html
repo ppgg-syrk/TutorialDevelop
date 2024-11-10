@@ -8,6 +8,11 @@
 <body>
     <h1>User情報管理システム</h1>
     <h2>User一覧(全件)</h2>
+    <!-- 追加ここからLesson18Chapter11セキュリティ -->
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" value="ログアウト">
+    </form><br>
+    <!-- 追加ここまでLesson18Chapter11セキュリティ -->
     <!-- 変更ここからLesson18Chapter9削除 -->
     <form name="frm" method="post" th:action="@{/user/list}">
         <a th:href="@{/user/register}">Userの登録</a>

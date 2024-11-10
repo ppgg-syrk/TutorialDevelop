@@ -1,6 +1,7 @@
 package com.techacademy.entity;
 
 import org.hibernate.validator.constraints.Length; // Lesson 18Chapter 10.2追加
+import org.springframework.transaction.annotation.Transactional; // Lesson 18Chapter 11追加
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne; // Lesson 18Chapter 11追加
+import jakarta.persistence.PreRemove; // Lesson 18Chapter 11追加
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email; // Lesson 18Chapter 10.2追加
 import jakarta.validation.constraints.Max; // Lesson 18Chapter 10.2追加
@@ -56,5 +59,20 @@ public class User {
     @Email // Lesson 18Chapter 10.2追加
     @Length(max=50) // Lesson 18Chapter 10.2追加
     private String email;
+
+    // ----- 追加ここから -----Lesson 18Chapter 11追加
+    @OneToOne(mappedBy="user")
+    private Authentication authentication;
+
+    /** レコードが削除される前に行なう処理 */
+    @PreRemove
+    @Transactional
+    private void preRemove() {
+        // 認証エンティティからuserを切り離す
+        if (authentication!=null) {
+            authentication.setUser(null);
+        }
+    }
+    // ----- 追加ここまで -----Lesson 18Chapter 11追加
 
 }
