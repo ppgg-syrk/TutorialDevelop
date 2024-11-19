@@ -41,7 +41,7 @@ public class UserController {
         // User登録画面に遷移
         return "user/register";
     }
-    
+
     // ----- 変更ここから -----Lesson18Chapter10入力チェック
     /** User登録処理 */
     @PostMapping("/register")
@@ -56,28 +56,57 @@ public class UserController {
         return "redirect:/user/list";
     }
     // ----- 追加:ここまで -----Lesson18Chapter7登録
- // ----- 変更ここまで -----Lesson18Chapter10入力チェック
+    // ----- 変更ここまで -----Lesson18Chapter10入力チェック
 
     // ----- 追加:ここから -----Lesson18Chapter8更新
     /** User更新画面を表示 */
-    @GetMapping("/update/{id}/")
+    /*@GetMapping("/update/{id}/")
     public String getUser(@PathVariable("id") Integer id, Model model) {
         // Modelに登録
         model.addAttribute("user", service.getUser(id));
         // User更新画面に遷移
         return "user/update";
-    }
+    }*/
 
     /** User更新処理 */
-    @PostMapping("/update/{id}/")
+    /*@PostMapping("/update/{id}/")
     public String postUser(User user) {
         // User登録
         service.saveUser(user);
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
-    }
+    }*/
     // ----- 追加:ここまで -----Lesson18Chapter8更新
-    
+    //　★ここから試し
+    @GetMapping("/update/{id}/")
+    public String getUser(
+            @PathVariable(value = "id", required = false) Integer id,
+            @ModelAttribute("user") User user,
+            Model model) {
+        if (id != null) {
+            // 一覧画面から遷移した場合
+            model.addAttribute("user", service.getUser(id));
+        } else {
+            // postUser() から遷移した場合
+            model.addAttribute("user", user);
+        }
+        return "user/update";
+    }
+
+    /**
+     * User更新処理
+     */
+    @PostMapping("/update/{id}/")
+    public String postUser(@Validated User user, BindingResult res, Model model) {
+        if (res.hasErrors()) {
+            // バリデーションエラーがある場合
+            model.addAttribute("bindingResult", res); // エラー情報をセット
+            return getUser(null, user, model);        // 再描画のためgetUser()を呼び出す
+        }
+        return "redirect:/user/list";
+    }
+
+
     // ----- 追加:ここから -----Lesson18Chapter9削除
     /** User削除処理 */
     @PostMapping(path="list", params="deleteRun")
@@ -88,5 +117,5 @@ public class UserController {
         return "redirect:/user/list";
     }
     // ----- 追加:ここまで -----Lesson18Chapter9削除
-    
+
 }
